@@ -1,0 +1,50 @@
+{
+    "name": "seba/phpstatic",
+    "type": "project",
+    "description": "PHP-based framework designed to host both static and PHP files for web applications.",
+    "keywords": [
+        "PHPStatic",
+        "static",
+        "seo",
+        "seo friendly",
+        "framework"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PHPStatic\\": "PHPStatic/Components/",
+            "PHPStatic\\Exceptions\\": "PHPStatic/Exceptions/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sebastiano",
+            "email": "sebastiano@racca.me"
+        }
+    ],
+    "require": {
+        "php": ">=8",
+        "cboden/ratchet": "^0.4.4",
+        "erusev/parsedown": "^1.7"
+    },
+    "scripts": {
+        "build": "@php PHPStatic/build.php",
+        "build-on-changes": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php PHPStatic/build-on-changes.php"
+        ],
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php PHPStatic/start.php"
+        ],
+        "docs": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php PHPStatic/docs.php"
+        ],
+        "post-root-package-install": "",
+        "post-create-project-cmd": ""
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

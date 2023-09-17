@@ -1,0 +1,20 @@
+{
+    "pages": {
+        "minify": false,
+        "path": "@/src/pages/",
+        "public_path": "@/src/public/",
+        "template": "@/src/template.html",
+        "distDir": "@/dist/"
+    },
+    "languages": {
+        "path": "@/src/locales/",
+        "default": "en-US",
+        "redirectOnDefault": true
+    },
+    "server": {
+        "address": "localhost",
+        "port": null
+    },
+    "public_path": "@/src/public/",
+    "global_variables": "@/src/variables.php"
+}
