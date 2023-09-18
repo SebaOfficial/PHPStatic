@@ -9,7 +9,7 @@
 namespace PHPStatic;
 
 class SEO {
-    private ?string $url;
+    private string $url;
     private array $pages;
 
     /**
@@ -89,8 +89,8 @@ class SEO {
 
     public function getRobots (array $allow, array $disallow, array $sitemaps) :string{
         return "User-agent: *\n" .
-            "Allow: " . implode("\nAllow: ", $allow) . "\n" .
             "Disallow: " . implode("\nDisallow: ", $disallow) . "\n" .
+            "Allow: " . implode("\nAllow: ", $allow) . "\n" .
             "Sitemap: $this->url" . implode("\nSitemap: $this->url", $sitemaps);
     
     }

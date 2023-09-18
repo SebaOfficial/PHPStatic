@@ -200,7 +200,7 @@ if(isset($arguments["seo"]) || $settings->seo->always ?? false){
         $seo->getRobots(
             array_map(function ($element) { return "/$element/"; }, $languages),
             $seoSettings->robots->disallow ?? [],
-            array_map(function ($element) use($seo) { return "$seo->url$element"; }, $sitemaps)
+            array_map(function ($element) use($seo) { return $element; }, $sitemaps)
         )
     );
 
