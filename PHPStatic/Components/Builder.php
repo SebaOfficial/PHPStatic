@@ -89,7 +89,7 @@ class Builder {
         }
 
         $content = preg_replace_callback('/#{{(.*?)}}/', function ($match) use ($texts, $pageName) {
-            return self::replacePlaceholders($match, $texts[$pageName]);
+            return self::replacePlaceholders($match, $texts[$pageName] ?? []);
         }, $content ?? file_get_contents($pagePath));
 
         $content = preg_replace_callback('/#{{(.*?)}}/', function ($match) use ($texts) {
@@ -98,7 +98,7 @@ class Builder {
 
         
         $template = preg_replace_callback('/#{{(.*?)}}/', function ($match) use ($texts, $pageName) {
-            return self::replacePlaceholders($match, $texts[$pageName]);
+            return self::replacePlaceholders($match, $texts[$pageName] ?? []);
         }, $templateContents);
         
         $template = preg_replace_callback('/#{{(.*?)}}/', function ($match) use ($texts) {

@@ -4,6 +4,8 @@ namespace PHPStatic;
 
 require_once __DIR__ . "/envirorment.php";
 
+$arguments = getopt("", ["seo"]);
+$availableExtensions = ["html", "php", "md"];
 
 $sys::message("Starting Build process...\n", 1);
 
@@ -34,7 +36,7 @@ if(!is_dir($paths->pages)){
     exit(1);
 }
 
-$pages = $sys::getDir($paths->pages, ["php", "html", "md"]);
+$pages = $sys::getDir($paths->pages, $availableExtensions);
 $pagesCount = count($pages);
 
 if($pagesCount <= 0) {
@@ -52,7 +54,9 @@ if(!is_dir($paths->languages)){
     exit(1);
 }
 
-$languages = $sys::getDir($paths->languages, ["json"]);
+$languages = array_map(function ($element) use ($build) {
+    return $build::removeExtension($element);
+}, $sys::getDir($paths->languages, ["json"]));
 
 if(count($languages) <= 0) {
     $sys::message("$paths->languages is empty, ingoring...\n", 1, true);
@@ -68,7 +72,6 @@ foreach($pages as $currentPage){
     $sys::message("\tCreating $pageName...", 1);
     
     foreach($languages as $lang){
-        $lang = $build::removeExtension($lang);
         $currentDir = $paths->dist . $lang . "/";
 
         if (!is_dir($currentDir)) {
@@ -143,7 +146,66 @@ $sys::rcopy($paths->public, $paths->dist);
 
 $sys::message("✔ Public directory copied.\n", 2, true);
 
+if(isset($arguments["seo"]) || $settings->seo->always ?? false){
+    $seoSettings = $settings->seo ?? null;
+    $seoPath = (($seoSettings->buildInPublic ?? false) ? $paths->public : $paths->dist);
 
+    $seo = new SEO($seoSettings->url ?? null);
+
+    $sys::message("Generating sitemaps...\n", 1);
+
+    foreach ($languages as $lang) {
+
+        $sys::message("\tCreating $lang's sitemap...", 1);
+
+        foreach ($sys::getDir("$paths->dist/$lang/") as $page) {
+            $pageName = str_replace($paths->dist, '', $page);
+
+            foreach ($availableExtensions as $ext) {
+                $actualPageName = $paths->pages . $build::removeExtension($pageName) . "." . $ext;
+                
+                if (file_exists($actualPageName)) {
+                    break;
+                }
+            }
+
+            $pageSettings = $seoSettings->sitemap->pages->{$build::removeExtension($pageName)} ?? null;
+
+            $args = [
+                "$lang/" . $pageName,
+                date("Y-m-d", filemtime($actualPageName)),
+                $pageSettings->priority ?? 0.5,
+                $pageSettings->changefreq ?? null
+            ];
+
+            $seo->addPage(...$args);
+        }
+
+        $sitemapName = str_replace("#{{lang}}", $lang, $seoSettings->sitemap->structure ?? "sitemap-#{{lang}}.xml");
+        $sitemaps[] = $sitemapName;
+
+        file_put_contents(
+            $seoPath . $sitemapName,
+            $seo->getSitemap()
+        );
+
+        $seo->resetSitemap();
+        $sys::message("\t✔ $lang's sitemap created. \n", 2, true);
+    }
+
+    $sys::message("Creating robots.txt...", 1);
+
+    file_put_contents(
+        $seoPath . "robots.txt",
+        $seo->getRobots(
+            array_map(function ($element) { return "/$element/"; }, $languages),
+            $seoSettings->robots->disallow ?? [],
+            array_map(function ($element) use($seoSettings) { return "$seoSettings->url$element"; }, $sitemaps)
+        )
+    );
+
+    $sys::message("✔ robots.txt created.\n", 2, true);
+}
 
 $sys::message("Done! Enjoy your website\n\n", 1);
 echo "Check out https://github.com/SebaOfficial/ for more.\n";

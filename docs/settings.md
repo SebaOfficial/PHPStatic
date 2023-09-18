@@ -22,6 +22,22 @@ Every project built with this framework should have a `phpstatic.json` file and 
         "address": "localhost",
         "port": null
     },
+    "seo": {
+        "always": false,
+        "buildInPublic": false,
+        "url": null,
+        "sitemap": {
+            "structure": "sitemap-#{{lang}}.xml",
+            "pages": {
+                
+            }
+        },
+        "robots": {
+            "disallow": [
+                
+            ]
+        }
+    },
     "public_path": "@/src/public/",
     "global_variables": "@/src/variables.php"
 }
@@ -41,6 +57,18 @@ Every project built with this framework should have a `phpstatic.json` file and 
     * **`path`** (`string`): The path to the directory where your project's language/locale files are located;
     * **`default`** (`string`): The default language/locale for your application;
     * **`redirectOnDefault`** (`boolean`): Wheter the user should be redirected to the default language if no language is specified;
+* **`seo`**:
+    * **`always`** (`bool`): Wheter `composer build` should always be `composer build-seo` (*see [cli](cli.html)*);
+    * **`sitemap`**:
+        * **`url`** (`string|null`): The url specified in the sitemap, pass `null` to use http://{hostName}, where {hostName} is set by [`gethostname`](https://www.php.net/manual/en/function.gethostname.php);
+        * **`buildInPublic`** (`bool`): Wheter the sitemap should be creatent in the `public/` directory or in the `dist/` directory;
+        * **`structure`** (`string`): The structure of the sitemap, use `#{{lang}}` to specify the sitemap language;
+        * **`pages`** (`object|null`):
+            * **`pageName`** (`string`): Replace `pageName` with the page name used in the `pages/` directory (without the file extension), i.e `index` for `index.html`;
+                * **`priority`** (`float`): Custom priority for the page, if not specified `0.5` is set;
+                * **`changefreq`** (`string`): Change frequency of the page, omitted if not specidfied;
+    * **`robots`**:
+        * **`disallow`** (`array`): A list of disallowed directories and files, all the other files will be allowed;
 * **`server`**:
     * **`adrress`** (`string`): The server's ip address (make it `0.0.0.0` to make the web server accessible to any interface;
     * **`port`** (`int|null`): The server's port, `null` to let the framework decide;

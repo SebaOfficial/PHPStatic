@@ -49,5 +49,5 @@ Framework variables are a special type of variables, here's a list of them:
 
 <div class="actions">
     <a href="settings.html" title="Previous Page: Settings">&lt;&lt; Settings</a>
-    <a href="examples.html" title="Next Page: Examples">Examples &gt;&gt;</a>
+    <a href="cli.html" title="Next Page: CLI">CLI &gt;&gt;</a>
 </div>

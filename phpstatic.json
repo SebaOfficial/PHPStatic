@@ -15,6 +15,22 @@
         "address": "localhost",
         "port": null
     },
+    "seo": {
+        "always": false,
+        "buildInPublic": false,
+        "url": null,
+        "sitemap": {
+            "structure": "sitemap-#{{lang}}.xml",
+            "pages": {
+                
+            }
+        },
+        "robots": {
+            "disallow": [
+                
+            ]
+        }
+    },
     "public_path": "@/src/public/",
     "global_variables": "@/src/variables.php"
 }

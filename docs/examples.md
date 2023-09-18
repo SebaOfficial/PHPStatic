@@ -10,5 +10,5 @@ Here's a list of projects made with PHPStatic
 
 
 <div class="actions">
-    <a href="settings.html" title="Previous Page: Variables">&lt;&lt; Variables</a>
+    <a href="cli.html" title="Previous Page: CLI">&lt;&lt; CLI</a>
 </div>
