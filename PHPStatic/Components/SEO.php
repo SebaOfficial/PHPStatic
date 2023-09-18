@@ -9,7 +9,7 @@
 namespace PHPStatic;
 
 class SEO {
-    private ?string $baseUrl;
+    private ?string $url;
     private array $pages;
 
     /**
